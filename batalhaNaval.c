@@ -25,6 +25,30 @@ int main()
     int aventureiro_diagonal_aumenta_posicao[2] = {4, 4};
     int aventureiro_diagonal_diminui_posicao[2] = {9, 6};
 
+    // habilidades
+    // habilidade 1
+    int cone[5][5] = {
+        {0, 0, 1, 0, 0},
+        {0, 1, 1, 1, 0},
+        {1, 1, 1, 1, 1},
+    };
+    // habilidade 2
+    int octaedro[5][5] = {
+        {0, 0, 1, 0, 0},
+        {0, 1, 1, 1, 0},
+        {0, 0, 1, 0, 0},
+    };
+    // habilidade 3
+    int cruz[5][5] = {
+        {0, 0, 1, 0, 0},
+        {1, 1, 1, 1, 1},
+        {0, 0, 1, 0, 0},
+    };
+    int altura_habilidade = 3;
+    int largura_habilidade = 5;
+    int ponto_habilidade[2] = {5, 5};
+    int habilidade_selecionada = 3;
+
     // Montar tabuleiro
     for (int y = 0; y < altura_tabuleiro; y++)
     {
@@ -67,10 +91,38 @@ int main()
                 printf("Navios se sobrepõe\n");
                 return 0;
             }
+            // preencher agua
             if (sobreposicao == 0)
             {
-
                 tabuleiro[x][y] = 0;
+            }
+            if (y >= ponto_habilidade[1] - altura_habilidade / 2 && y <= ponto_habilidade[1] + altura_habilidade / 2 &&
+                x >= ponto_habilidade[0] - largura_habilidade / 2 && x <= ponto_habilidade[0] + largura_habilidade / 2)
+            {
+                int posicao_x = x - (ponto_habilidade[0] - largura_habilidade / 2);
+                int posicao_y = y - (ponto_habilidade[1] - altura_habilidade / 2);
+                switch (habilidade_selecionada)
+                {
+                case 1:
+                    if (cone[posicao_y][posicao_x])
+                    {
+                        tabuleiro[x][y] = 5;
+                    }
+                    break;
+                case 2:
+                    if (octaedro[posicao_y][posicao_x])
+                    {
+                        tabuleiro[x][y] = 5;
+                    }
+                    break;
+                case 3:
+                    if (cruz[posicao_y][posicao_x])
+                    {
+                        tabuleiro[x][y] = 5;
+                    }
+                    break;
+                default:
+                }
             }
         }
     }
