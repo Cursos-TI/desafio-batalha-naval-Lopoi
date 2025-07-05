@@ -14,22 +14,16 @@ int main()
     int altura_tabuleiro = 10;
     int largura_tabuleiro = 10;
     int tabuleiro[largura_tabuleiro][altura_tabuleiro];
-    // tamanhos dos navios
+    // Tamanhos dos navios
     int navio_horizontal_tamanho = 3;
     int navio_vertical_tamanho = 4;
+    int aventureiro_diagonal_aumenta_tamanho = 2;
+    int aventureiro_diagonal_diminui_tamanho = 3;
     // Posição inicial dos navios (x, y) (iniciando de 0)
     int navio_horizontal_posicao[2] = {1, 2};
     int navio_vertical_posicao[2] = {4, 5};
-
-    // Validação da posição dos navios
-    if (navio_vertical_posicao[0] >= largura_tabuleiro || navio_vertical_posicao[1] >= altura_tabuleiro ||
-        navio_vertical_posicao[1] + navio_vertical_tamanho >= altura_tabuleiro ||
-        navio_horizontal_posicao[0] >= largura_tabuleiro || navio_horizontal_posicao[1] >= altura_tabuleiro ||
-        navio_horizontal_posicao[0] + navio_horizontal_tamanho >= largura_tabuleiro)
-    {
-        printf("Navios em posições inválidas\n");
-        return 0;
-    }
+    int aventureiro_diagonal_aumenta_posicao[2] = {4, 4};
+    int aventureiro_diagonal_diminui_posicao[2] = {9, 6};
 
     // Montar tabuleiro
     for (int y = 0; y < altura_tabuleiro; y++)
@@ -37,27 +31,54 @@ int main()
         for (int x = 0; x < largura_tabuleiro; x++)
         {
             int sobreposicao = 0;
-            if (x >= navio_horizontal_posicao[0] && x < navio_horizontal_posicao[0] + navio_horizontal_tamanho && y == navio_horizontal_posicao[1])
+            if (x == navio_horizontal_posicao[0] && y == navio_horizontal_posicao[1] && navio_horizontal_tamanho > 0)
             {
                 tabuleiro[x][y] = 3;
+                navio_horizontal_posicao[0]++;
+                navio_horizontal_tamanho--;
                 sobreposicao++;
             }
-            if (y >= navio_vertical_posicao[1] && y < navio_vertical_posicao[1] + navio_vertical_tamanho && x == navio_vertical_posicao[0])
+            if (x == navio_vertical_posicao[0] && y == navio_vertical_posicao[1] && navio_vertical_tamanho > 0)
             {
                 tabuleiro[x][y] = 3;
+                navio_vertical_posicao[1]++;
+                navio_vertical_tamanho--;
+                sobreposicao++;
+            }
+            if (x == aventureiro_diagonal_aumenta_posicao[0] && y == aventureiro_diagonal_aumenta_posicao[1] && aventureiro_diagonal_aumenta_tamanho > 0)
+            {
+                tabuleiro[x][y] = 3;
+                aventureiro_diagonal_aumenta_posicao[0]++;
+                aventureiro_diagonal_aumenta_posicao[1]++;
+                aventureiro_diagonal_aumenta_tamanho--;
+                sobreposicao++;
+            }
+            if (x == aventureiro_diagonal_diminui_posicao[0] && y == aventureiro_diagonal_diminui_posicao[1] && aventureiro_diagonal_diminui_tamanho > 0)
+            {
+                tabuleiro[x][y] = 3;
+                aventureiro_diagonal_diminui_posicao[0]--;
+                aventureiro_diagonal_diminui_posicao[1]++;
+                aventureiro_diagonal_diminui_tamanho--;
                 sobreposicao++;
             }
             // validação de sobreposição
-            if(sobreposicao == 2){
+            if (sobreposicao >= 2)
+            {
                 printf("Navios se sobrepõe\n");
                 return 0;
             }
-            if(sobreposicao == 0)
+            if (sobreposicao == 0)
             {
 
                 tabuleiro[x][y] = 0;
             }
         }
+    }
+
+    if (aventureiro_diagonal_aumenta_tamanho > 0 || aventureiro_diagonal_diminui_tamanho > 0 || navio_horizontal_tamanho > 0 || navio_vertical_tamanho > 0)
+    {
+        printf("Navios fora do tabuleiro\n");
+        return 0;
     }
 
     // Mostrar tabuleiro
